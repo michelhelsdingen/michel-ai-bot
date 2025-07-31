@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import Image from 'next/image';
 
 interface Message {
   id: string;
@@ -105,11 +106,14 @@ export default function MichelAIBot() {
         <div className="flex justify-center mb-6">
           <div className="relative animate-float">
             <div className="absolute inset-0 bg-gradient-to-br from-yellow-300 to-orange-400 rounded-full blur-2xl opacity-50 scale-110"></div>
-            <div className="relative z-10 w-48 h-48 bg-gradient-to-br from-orange-300 to-orange-500 rounded-full flex items-center justify-center shadow-2xl">
-              <div className="text-6xl">
-                {isThinking ? '🤔' : isTalking ? '😮' : '😊'}
-              </div>
-            </div>
+            <Image
+              src={isTalking ? '/michel-open.png' : '/michel-gesloten.png'}
+              alt="Michel AI Bot"
+              width={200}
+              height={200}
+              priority
+              className="relative z-10 drop-shadow-2xl transition-all duration-150 hover:scale-105 transform"
+            />
             {isThinking && (
               <div className="absolute -top-2 -right-2">
                 <div className="relative">
