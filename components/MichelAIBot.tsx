@@ -2,6 +2,10 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
+import AnimatedBackground from './AnimatedBackground';
+import ThinkingAnimation from './ThinkingAnimation';
+import AnimatedMessage from './AnimatedMessage';
+import SparkleEffect from './SparkleEffect';
 
 interface Message {
   id: string;
@@ -90,8 +94,9 @@ export default function MichelAIBot() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-purple-600 via-blue-600 to-indigo-700 p-4">
-      <div className="w-full max-w-4xl">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-purple-600 via-blue-600 to-indigo-700 p-4 relative">
+      <AnimatedBackground />
+      <div className="w-full max-w-4xl relative z-10">
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-6xl font-bold text-white mb-2 drop-shadow-2xl">
@@ -114,6 +119,7 @@ export default function MichelAIBot() {
               priority
               className="relative z-10 drop-shadow-2xl transition-all duration-150 hover:scale-105 transform"
             />
+            <SparkleEffect active={isTalking} />
             {isThinking && (
               <div className="absolute -top-2 -right-2">
                 <div className="relative">
@@ -136,35 +142,20 @@ export default function MichelAIBot() {
             </div>
           )}
           
-          {messages.map((message) => (
-            <div
+          {messages.map((message, index) => (
+            <AnimatedMessage
               key={message.id}
-              className={`mb-4 ${
-                message.sender === 'user' ? 'text-right' : 'text-left'
-              }`}
+              sender={message.sender}
+              delay={index * 100}
             >
-              <div
-                className={`inline-block p-4 rounded-2xl max-w-[70%] shadow-lg ${
-                  message.sender === 'user'
-                    ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white'
-                    : 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-800 border border-gray-300'
-                }`}
-              >
-                <p className={`text-base ${message.sender === 'user' ? 'font-medium' : 'font-normal'}`}>
-                  {message.text}
-                </p>
-              </div>
-            </div>
+              {message.text}
+            </AnimatedMessage>
           ))}
           
           {isThinking && (
-            <div className="text-left mb-4">
+            <div className="text-left mb-4 animate-fade-in">
               <div className="inline-block p-4 rounded-2xl bg-gradient-to-r from-gray-100 to-gray-200 shadow-lg">
-                <div className="flex space-x-2">
-                  <div className="w-3 h-3 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full animate-bounce"></div>
-                  <div className="w-3 h-3 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                  <div className="w-3 h-3 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                </div>
+                <ThinkingAnimation size={32} />
               </div>
             </div>
           )}

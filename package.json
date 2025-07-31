@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "lottie-react": "^2.4.1",
     "next": "15.4.5",
     "openai": "^5.11.0",
     "react": "19.1.0",
