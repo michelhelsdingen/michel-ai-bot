@@ -115,7 +115,7 @@ export default function MichelAIBot() {
             🇳🇱 De grappigste AI assistent van Nederland! 
           </Badge>
           <p className="text-xl text-blue-100/80 drop-shadow-lg max-w-2xl mx-auto">
-            Powered by Michel's humor & OpenAI's intelligence ✨
+            Powered by Michel&apos;s humor &amp; OpenAI&apos;s intelligence ✨
           </p>
         </div>
 

@@ -14,7 +14,7 @@ export default function ThinkingAnimation({ size = 40 }: ThinkingAnimationProps)
     if (!container) return;
 
     // Create animated dots
-    const dots = [];
+    const dots: HTMLDivElement[] = [];
     for (let i = 0; i < 3; i++) {
       const dot = document.createElement('div');
       dot.className = 'thinking-dot';
