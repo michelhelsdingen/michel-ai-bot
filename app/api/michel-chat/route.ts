@@ -6,8 +6,8 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-// Michel's persoonlijkheid
-const MICHEL_PERSONALITY = `Je bent Michel AI Bot, een super grappige Nederlandse AI assistent. 
+// HelsBotje GPT's persoonlijkheid
+const HELSBOTJE_PERSONALITY = `Je bent HelsBotje GPT, een super grappige Nederlandse AI assistent gemaakt door Michel. 
 Je hebt de volgende eigenschappen:
 - Je maakt veel Nederlandse woordgrappen en dad jokes
 - Je gebruikt vaak uitdrukkingen zoals "Nou nou!", "Potverdorie!", "Tjeetje mineetje!"
@@ -26,7 +26,7 @@ export async function POST(request: Request) {
 
     if (!process.env.OPENAI_API_KEY) {
       return NextResponse.json(
-        { response: 'Oeps! Michel heeft zijn OpenAI sleutels verloren! 🔑 Zet OPENAI_API_KEY in je .env.local bestand!' },
+        { response: 'Oeps! HelsBotje heeft zijn OpenAI sleutels verloren! 🔑 Zet OPENAI_API_KEY in je .env.local bestand!' },
         { status: 500 }
       );
     }
@@ -34,7 +34,7 @@ export async function POST(request: Request) {
     const completion = await openai.chat.completions.create({
       model: 'gpt-4-turbo-preview',
       messages: [
-        { role: 'system', content: MICHEL_PERSONALITY },
+        { role: 'system', content: HELSBOTJE_PERSONALITY },
         { role: 'user', content: message }
       ],
       temperature: 0.9,

@@ -6,6 +6,11 @@ import AnimatedBackground from './AnimatedBackground';
 import ThinkingAnimation from './ThinkingAnimation';
 import AnimatedMessage from './AnimatedMessage';
 import SparkleEffect from './SparkleEffect';
+import { Button } from './ui/button';
+import { Card, CardContent } from './ui/card';
+import { Input } from './ui/input';
+import { Badge } from './ui/badge';
+import { Send, Sparkles, Bot } from 'lucide-react';
 
 interface Message {
   id: string;
@@ -94,16 +99,23 @@ export default function MichelAIBot() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-purple-600 via-blue-600 to-indigo-700 p-4 relative">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-purple-600 via-blue-600 to-indigo-700 p-4 relative overflow-hidden">
       <AnimatedBackground />
-      <div className="w-full max-w-4xl relative z-10">
+      <div className="w-full max-w-6xl relative z-10">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-6xl font-bold text-white mb-2 drop-shadow-2xl">
-            Michel AI Bot
-          </h1>
-          <p className="text-xl text-blue-100 drop-shadow-lg">
-            De grappigste AI assistent van Nederland! 🎉
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <Bot className="w-12 h-12 text-yellow-300 animate-pulse" />
+            <h1 className="text-7xl font-bold text-white drop-shadow-2xl bg-gradient-to-r from-white via-blue-100 to-purple-100 bg-clip-text text-transparent">
+              HelsBotje GPT
+            </h1>
+            <Sparkles className="w-12 h-12 text-pink-300 animate-bounce" />
+          </div>
+          <Badge variant="magic" className="text-lg px-6 py-2 mb-4">
+            🇳🇱 De grappigste AI assistent van Nederland! 
+          </Badge>
+          <p className="text-xl text-blue-100/80 drop-shadow-lg max-w-2xl mx-auto">
+            Powered by Michel's humor & OpenAI's intelligence ✨
           </p>
         </div>
 
@@ -111,14 +123,17 @@ export default function MichelAIBot() {
         <div className="flex justify-center mb-6">
           <div className="relative animate-float">
             <div className="absolute inset-0 bg-gradient-to-br from-yellow-300 to-orange-400 rounded-full blur-2xl opacity-50 scale-110"></div>
-            <Image
-              src={isTalking ? '/michel-open.png' : '/michel-gesloten.png'}
-              alt="Michel AI Bot"
-              width={200}
-              height={200}
-              priority
-              className="relative z-10 drop-shadow-2xl transition-all duration-150 hover:scale-105 transform"
-            />
+            <div className="relative z-10 w-[200px] h-[200px] flex items-center justify-center">
+              <Image
+                src={isTalking ? '/michel-open.png' : '/michel-gesloten.png'}
+                alt="Michel AI Bot"
+                width={200}
+                height={200}
+                priority
+                className="drop-shadow-2xl transition-all duration-150 hover:scale-105 transform object-contain"
+                style={{ maxWidth: '200px', maxHeight: '200px' }}
+              />
+            </div>
             <SparkleEffect active={isTalking} />
             {isThinking && (
               <div className="absolute -top-2 -right-2">
@@ -132,15 +147,23 @@ export default function MichelAIBot() {
         </div>
 
         {/* Chat Container */}
-        <div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl p-6 mb-6 h-96 overflow-y-auto border border-white/20">
-          {messages.length === 0 && (
-            <div className="text-center text-gray-700 mt-20">
-              <p className="text-2xl font-bold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600">
-                Hoi! Ik ben Michel AI Bot! 🤖
-              </p>
-              <p className="text-lg text-gray-600">Stel me een vraag en ik geef je een hilarisch antwoord!</p>
-            </div>
-          )}
+        <Card className="mb-6 h-[500px] shadow-2xl border-2 border-white/30 bg-white/5 backdrop-blur-xl">
+          <CardContent className="p-6 h-full overflow-y-auto">
+            {messages.length === 0 && (
+              <div className="text-center mt-32 space-y-4">
+                <div className="text-6xl mb-4">🤖</div>
+                <h2 className="text-3xl font-bold mb-3 text-white">
+                  Hoi! Ik ben HelsBotje GPT!
+                </h2>
+                <p className="text-xl text-blue-100/80 max-w-md mx-auto leading-relaxed">
+                  Stel me een vraag en ik geef je een hilarisch antwoord vol Nederlandse humor! 
+                </p>
+                <div className="flex items-center justify-center gap-2 mt-6">
+                  <Badge variant="magic">Powered by OpenAI</Badge>
+                  <Badge variant="secondary" className="bg-white/20 text-white">Dutch Humor</Badge>
+                </div>
+              </div>
+            )}
           
           {messages.map((message, index) => (
             <AnimatedMessage
@@ -160,27 +183,47 @@ export default function MichelAIBot() {
             </div>
           )}
           
-          <div ref={messagesEndRef} />
-        </div>
+            <div ref={messagesEndRef} />
+          </CardContent>
+        </Card>
 
         {/* Input Form */}
-        <form onSubmit={handleSubmit} className="flex gap-3">
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Vraag Michel iets grappigs..."
-            className="flex-1 p-4 bg-white/90 backdrop-blur-md border-2 border-white/20 rounded-2xl focus:outline-none focus:ring-4 focus:ring-purple-500/50 focus:border-purple-400 transition-all shadow-lg text-gray-800 placeholder-gray-500"
-            disabled={isThinking}
-          />
-          <button
-            type="submit"
-            disabled={isThinking || !input.trim()}
-            className="px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-2xl hover:from-purple-700 hover:to-blue-700 disabled:from-gray-400 disabled:to-gray-500 transition-all font-bold shadow-lg hover:shadow-xl transform hover:scale-105 disabled:hover:scale-100"
-          >
-            {isThinking ? '🤔' : '✨ Verstuur'}
-          </button>
-        </form>
+        <Card className="border-2 border-white/30 bg-white/5 backdrop-blur-xl shadow-2xl">
+          <CardContent className="p-4">
+            <form onSubmit={handleSubmit} className="flex gap-3">
+              <div className="flex-1 relative">
+                <Input
+                  type="text"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  placeholder="Vraag HelsBotje iets grappigs... 🇳🇱"
+                  disabled={isThinking}
+                  className="pr-12 h-12 text-lg border-2 border-white/40 bg-white/10 placeholder:text-white/60 text-white focus:border-pink-400 focus:ring-pink-400/50"
+                />
+                <Bot className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/50" />
+              </div>
+              <Button
+                type="submit"
+                disabled={isThinking || !input.trim()}
+                variant="magic"
+                size="lg"
+                className="h-12 px-6 text-lg font-bold"
+              >
+                {isThinking ? (
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                    Denkt...
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-5 h-5 mr-2" />
+                    Verstuur
+                  </>
+                )}
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
