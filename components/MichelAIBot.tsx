@@ -1,11 +1,10 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import Image from 'next/image';
 import AnimatedBackground from './AnimatedBackground';
 import ThinkingAnimation from './ThinkingAnimation';
 import AnimatedMessage from './AnimatedMessage';
-import SparkleEffect from './SparkleEffect';
+import MichelLottieHead from './MichelLottieHead';
 import { Button } from './ui/button';
 import { Card, CardContent } from './ui/card';
 import { Input } from './ui/input';
@@ -119,31 +118,12 @@ export default function MichelAIBot() {
           </p>
         </div>
 
-        {/* Michel's Hoofd */}
-        <div className="flex justify-center mb-6">
-          <div className="relative animate-float">
-            <div className="absolute inset-0 bg-gradient-to-br from-yellow-300 to-orange-400 rounded-full blur-2xl opacity-50 scale-110"></div>
-            <div className="relative z-10 w-[200px] h-[200px] flex items-center justify-center">
-              <Image
-                src={isTalking ? '/michel-open.png' : '/michel-gesloten.png'}
-                alt="Michel AI Bot"
-                width={200}
-                height={200}
-                priority
-                className="drop-shadow-2xl transition-all duration-150 hover:scale-105 transform object-contain"
-                style={{ maxWidth: '200px', maxHeight: '200px' }}
-              />
-            </div>
-            <SparkleEffect active={isTalking} />
-            {isThinking && (
-              <div className="absolute -top-2 -right-2">
-                <div className="relative">
-                  <div className="animate-spin rounded-full h-10 w-10 border-b-4 border-yellow-300"></div>
-                  <div className="absolute inset-0 animate-ping rounded-full h-10 w-10 border-4 border-yellow-300 opacity-25"></div>
-                </div>
-              </div>
-            )}
-          </div>
+        {/* Michel's Advanced Lottie Head */}
+        <div className="flex justify-center mb-8">
+          <MichelLottieHead 
+            state={isThinking ? 'thinking' : isTalking ? 'talking' : 'idle'}
+            size={220}
+          />
         </div>
 
         {/* Chat Container */}
