@@ -12,6 +12,7 @@ export default function MichelAIBot() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isThinking, setIsThinking] = useState(false);
+  const [isTalking, setIsTalking] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -21,6 +22,21 @@ export default function MichelAIBot() {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  const animateTalking = (duration: number) => {
+    const words = duration / 150; // Ongeveer 150ms per "woord"
+    let toggleCount = 0;
+    
+    const interval = setInterval(() => {
+      setIsTalking(prev => !prev);
+      toggleCount++;
+      
+      if (toggleCount >= words * 2) {
+        clearInterval(interval);
+        setIsTalking(false);
+      }
+    }, 150);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,6 +62,10 @@ export default function MichelAIBot() {
       const data = await response.json();
       
       setIsThinking(false);
+      
+      // Start met praten animatie
+      const responseLength = data.response.length;
+      animateTalking(responseLength * 20); // 20ms per karakter
       
       const michelMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -79,6 +99,26 @@ export default function MichelAIBot() {
           <p className="text-xl text-blue-100 drop-shadow-lg">
             De grappigste AI assistent van Nederland! 🎉
           </p>
+        </div>
+
+        {/* Michel's Hoofd */}
+        <div className="flex justify-center mb-6">
+          <div className="relative animate-float">
+            <div className="absolute inset-0 bg-gradient-to-br from-yellow-300 to-orange-400 rounded-full blur-2xl opacity-50 scale-110"></div>
+            <div className="relative z-10 w-48 h-48 bg-gradient-to-br from-orange-300 to-orange-500 rounded-full flex items-center justify-center shadow-2xl">
+              <div className="text-6xl">
+                {isThinking ? '🤔' : isTalking ? '😮' : '😊'}
+              </div>
+            </div>
+            {isThinking && (
+              <div className="absolute -top-2 -right-2">
+                <div className="relative">
+                  <div className="animate-spin rounded-full h-10 w-10 border-b-4 border-yellow-300"></div>
+                  <div className="absolute inset-0 animate-ping rounded-full h-10 w-10 border-4 border-yellow-300 opacity-25"></div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Chat Container */}
